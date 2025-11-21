@@ -529,9 +529,33 @@ h1 {
         grid-template-columns: 1fr;
     }
 
+    /* Mobile nav: hidden by default, shown when open */
     .nav-links {
         display: none;
-    } /* Simple hide for demo, would need hamburger JS */
+    }
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    /* When the nav has .mobile-open (toggled via JS) show the nav-links as a dropdown */
+    .nav .nav-links.open {
+        display: flex;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: var(--nav-height);
+        background: var(--card-bg);
+        flex-direction: column;
+        padding: 12px 20px;
+        gap: 12px;
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+    }
+    .nav .nav-links.open a {
+        margin: 0;
+        padding: 8px 12px;
+        border-radius: 8px;
+    }
     .mobile-menu-toggle {
         display: block;
     }

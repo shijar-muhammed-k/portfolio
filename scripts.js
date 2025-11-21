@@ -20,6 +20,42 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+// 1b. Mobile navigation toggle (shows nav-links on small screens)
+(function setupMobileNav(){
+  const toggle = document.querySelector('.mobile-menu-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (!toggle || !nav) return;
+
+  // Toggle open/close
+  toggle.addEventListener('click', (e) => {
+    const isOpen = nav.classList.toggle('open');
+    nav.setAttribute('aria-hidden', (!isOpen).toString());
+    toggle.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  // Close menu when a nav link is clicked (for single-page anchors)
+  nav.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      if (nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        nav.setAttribute('aria-hidden', 'true');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  // Close when clicking outside the nav when it's open
+  document.addEventListener('click', (e) => {
+    if (!nav.classList.contains('open')) return;
+    const target = e.target;
+    if (!nav.contains(target) && !toggle.contains(target)) {
+      nav.classList.remove('open');
+      nav.setAttribute('aria-hidden', 'true');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+
 // 2. Form Handling
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
