@@ -22,32 +22,103 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 // 2. Form Handling
 const contactForm = document.getElementById('contact-form');
-if(contactForm) {
-  contactForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    
-    // Basic validation simulation
-    const btn = this.querySelector('button');
-    const originalText = btn.innerText;
-    
-    btn.innerText = 'Sending...';
-    btn.disabled = true;
-
-    // Simulate network request
+if (contactForm) {
+  // helper: show a small toast message
+  function showToast(message, type = 'success', timeout = 3500) {
+    const t = document.createElement('div');
+    t.className = `toast ${type}`;
+    t.textContent = message;
+    t.addEventListener('click', () => t.remove());
+    document.body.appendChild(t);
+    // remove after timeout
     setTimeout(() => {
-      alert(`Thanks! I've received your message and will get back to you at ${this.email.value}.`);
+      t.style.opacity = '0';
+      setTimeout(() => t.remove(), 300);
+    }, timeout);
+  }
+
+  contactForm.addEventListener('submit', async function (e) {
+    const action = (this.getAttribute('action') || '').trim();
+
+    // If posting to Formspree: intercept and POST via fetch to avoid navigation
+    if (action && action.includes('formspree.io')) {
+      e.preventDefault();
+
+      const btn = this.querySelector('button[type="submit"]') || this.querySelector('button');
+      const originalText = btn ? btn.innerText : '';
+      if (btn) { btn.innerText = 'Sending...'; btn.disabled = true; }
+
+      // Build FormData (Formspree accepts form data) and request JSON response
+      const formData = new FormData(this);
+
+      try {
+        const res = await fetch(action, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: formData
+        });
+
+        if (res.ok) {
+          showToast('Message sent — thanks! I will get back to you shortly.', 'success');
+          this.reset();
+        } else {
+          // Try to parse JSON error from Formspree
+          let errText = 'Failed to send message';
+          try { const j = await res.json(); if (j && j.error) errText = j.error; } catch(_) {}
+          showToast(errText, 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        showToast('Network error — please try again later.', 'error');
+      } finally {
+        if (btn) { btn.innerText = originalText; btn.disabled = false; }
+      }
+
+      return;
+    }
+
+    // Otherwise handle via fetch to backend API (JSON). Prevent default navigation.
+    e.preventDefault();
+
+    const btn = this.querySelector('button[type="submit"]') || this.querySelector('button');
+    const originalText = btn ? btn.innerText : '';
+    if (btn) { btn.innerText = 'Sending...'; btn.disabled = true; }
+
+    const data = {
+      name: this.name && this.name.value || '',
+      email: this.email && this.email.value || '',
+      subject: this.subject && this.subject.value || '',
+      message: this.message && this.message.value || ''
+    };
+
+    if (!data.name || !data.email || !data.message) {
+      showToast('Please fill name, email and message.', 'error');
+      if (btn) { btn.innerText = originalText; btn.disabled = false; }
+      return;
+    }
+
+    const postUrl = action || '/api/contact/';
+
+    try {
+      const res = await fetch(postUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      if (!res.ok) throw new Error('Network response not ok');
+
+      showToast(`Thanks ${data.name}! Your message was sent.`, 'success');
       this.reset();
-      btn.innerText = 'Message Sent';
-      btn.style.backgroundColor = '#10b981'; // Green success
-      btn.style.borderColor = '#10b981';
-      
+
+    } catch (err) {
+      console.error(err);
+      showToast('Something went wrong sending the message.', 'error');
+    } finally {
       setTimeout(() => {
-        btn.innerText = originalText;
-        btn.disabled = false;
-        btn.style.backgroundColor = ''; // Reset to CSS default
-        btn.style.borderColor = '';
-      }, 3000);
-    }, 1500);
+        if (btn) { btn.innerText = originalText; btn.disabled = false; }
+      }, 1200);
+    }
   });
 }
 
