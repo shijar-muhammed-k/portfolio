@@ -95,6 +95,26 @@ if (projectsGrid) {
   });
 }
 
+// Contact icon click handling (GitHub / LinkedIn)
+document.querySelectorAll('a.contact-link').forEach(a => {
+  a.addEventListener('click', (e) => {
+    const href = (a.getAttribute('href') || '').trim();
+    const name = a.dataset.name || a.getAttribute('aria-label') || 'Link';
+
+    // If href is not set or is '#', show informational toast
+    if (!href || href === '#') {
+      e.preventDefault();
+      showToast(`${name} link not configured yet`, 'error');
+      return;
+    }
+
+    // Otherwise open in new tab and show a toast
+    e.preventDefault();
+    showToast(`Opening ${name} — opens in new tab`, 'success', 1400);
+    window.open(href, '_blank', 'noopener');
+  });
+});
+
 // 2. Form Handling
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
