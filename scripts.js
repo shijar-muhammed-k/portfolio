@@ -56,6 +56,45 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 })();
 
+// 4. Project link handling (logos / titles)
+function showToast(message, type = 'success', timeout = 3500) {
+  // global toast utility (safe to call multiple times)
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = message;
+  t.addEventListener('click', () => t.remove());
+  document.body.appendChild(t);
+  setTimeout(() => {
+    t.style.opacity = '0';
+    setTimeout(() => t.remove(), 300);
+  }, timeout);
+}
+
+const projectsGrid = document.querySelector('.projects-grid');
+if (projectsGrid) {
+  projectsGrid.addEventListener('click', (e) => {
+    const card = e.target.closest('.project-card');
+    if (!card) return;
+
+    const name = card.dataset.name || card.querySelector('h3')?.textContent || 'Project';
+    const url = card.dataset.url;
+    const isPrivate = card.dataset.private === 'true';
+
+    if (isPrivate) {
+      showToast('Private client project — contact for details', 'error');
+      return;
+    }
+
+    if (url) {
+      showToast(`Opening ${name} — opens in new tab`, 'success', 1600);
+      window.open(url, '_blank', 'noopener');
+      return;
+    }
+
+    showToast('Link not available — coming soon', 'error');
+  });
+}
+
 // 2. Form Handling
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {

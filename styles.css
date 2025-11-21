@@ -391,6 +391,35 @@ h1 {
     box-shadow: var(--shadow-lg);
     border-color: var(--primary);
 }
+.project-card.muted {
+    opacity: 0.75;
+    background: linear-gradient(180deg, #fbfcfe 0%, #f8fafc 100%);
+    border-style: dashed;
+}
+
+/* Project logo placeholder */
+.project-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.project-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg,#eef2ff,#e0f2fe);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    border: 1px solid var(--border);
+    flex: 0 0 48px;
+}
+.project-logo.small { width:36px; height:36px; border-radius:8px; font-size:0.8rem; }
+.project-card .project-content h3 { margin: 0; }
 .project-content h3 {
     margin-bottom: 12px;
 }
