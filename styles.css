@@ -538,6 +538,10 @@ h1 {
     flex-wrap: wrap;
 }
 
+.social-links strong {
+    margin-bottom: 0;
+}
+
 .contact-link {
     display: inline-flex;
     align-items: center;
