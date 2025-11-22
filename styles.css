@@ -225,6 +225,9 @@ h1 {
     font-size: 0.9rem;
     color: var(--text-muted);
     font-weight: 500;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .divider {
@@ -542,6 +545,10 @@ h1 {
     margin-bottom: 0;
 }
 
+.social-links img {
+    width: 20px;
+}
+
 .contact-link {
     display: inline-flex;
     align-items: center;
@@ -630,8 +637,14 @@ h1 {
         text-align: center;
     }
 
-    .hero-visual {
-        display: none;
+    .card-1 {
+        top: -25px;
+        right: -25px;
+    }
+
+    .card-2 {
+        bottom: -25px;
+        left: -20px;
     }
 
     /* Hide visual on mobile for cleanliness */
