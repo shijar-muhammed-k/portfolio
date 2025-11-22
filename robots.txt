@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://shijar-muhammed-k.github.io/portfolio/sitemap.xml
+
+# Optional crawl-delay (uncomment if your host has rate limits)
+# Crawl-delay: 10
