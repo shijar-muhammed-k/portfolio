@@ -235,3 +235,43 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.hidden-element').forEach((el) => {
   observer.observe(el);
 });
+
+// Counter animation for stat numbers (counts from 1 to target)
+function animateCounter(el, target, duration = 900, suffix = '') {
+  const start = 1;
+  const range = target - start;
+  const startTime = performance.now();
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = progress < 0.5 ? 2 * progress * progress : -1 + (4 - 2 * progress) * progress; // easeInOut
+    const current = Math.floor(start + range * eased);
+    el.textContent = String(current) + suffix;
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      el.textContent = String(target) + suffix;
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+// Observe counter elements and animate when visible
+const counters = document.querySelectorAll('.counter');
+if (counters.length) {
+  const counterObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      if (el.dataset.animated === 'true') { obs.unobserve(el); return; }
+      const target = parseInt(el.dataset.target, 10) || 0;
+      const suffix = el.dataset.suffix || '';
+      animateCounter(el, target, 900, suffix);
+      el.dataset.animated = 'true';
+      obs.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(c => counterObserver.observe(c));
+}
