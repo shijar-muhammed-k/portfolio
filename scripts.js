@@ -79,9 +79,15 @@ if (projectsGrid) {
     const name = card.dataset.name || card.querySelector('h3')?.textContent || 'Project';
     const url = card.dataset.url;
     const isPrivate = card.dataset.private === 'true';
+    const isOnProgress = card.dataset.onprogress === 'true';
 
     if (isPrivate) {
       showToast('Private client project — contact for details', 'error');
+      return;
+    }
+
+    if (isOnProgress) {
+      showToast(`${name} is under development — stay tuned!`, 'info');
       return;
     }
 
