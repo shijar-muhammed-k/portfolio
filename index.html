@@ -36,14 +36,14 @@
     <meta name="twitter:image" content="https://shijar-muhammed-k.github.io/portfolio/assets/profile.webp">
 
     <!-- Mobile / Theme -->
-    <meta name="theme-color" content="#0f1724">
+    <meta name="theme-color" content="#ffffff">
 
     <!-- Performance hints -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Preload main stylesheet for faster paint -->
     <link rel="preload" href="styles.css" as="style">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 
     <!-- Structured Data: WebSite + Person -->
@@ -89,16 +89,19 @@
 </head>
 
 <body>
+    <!-- Custom Cursor (Desktop only) -->
+    <div id="custom-cursor" class="custom-cursor"></div>
+    <div id="custom-cursor-dot" class="custom-cursor-dot"></div>
 
     <header class="nav">
         <div class="container nav-container">
-            <div class="brand">Shijar Muhammed K</div>
+            <div class="brand">Shijar <span class="text-coral">+ Design</span></div>
             <nav id="primary-nav" class="nav-links" aria-hidden="true">
                 <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
                 <a href="#projects">Projects</a>
-                <a href="#contact" class="btn-nav">Contact</a>
+                <a href="#skills">Skills</a>
+                <a href="#about">About</a>
+                <a href="#contact" class="btn-nav">Hire me</a>
             </nav>
             <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false"
                 aria-controls="primary-nav">☰</button>
@@ -106,381 +109,359 @@
     </header>
 
     <main>
-        <section class="hero" id="home">
+        <!-- Hero Section (Light Section) -->
+        <section class="hero section-light-bg" id="home">
             <div class="container hero-container">
                 <div class="hero-content hidden-element">
-                    <div class="badge">Available for hire</div>
-                    <h1>Frontend & <br> <span class="text-gradient">Full-stack Engineer</span></h1>
-                    <p class="lead">I build high-performance web applications with <b>Angular</b> and <b>Django</b>. I
-                        focus on clean UI, scalability, and robust backend APIs.</p>
-                    <div class="cta-group">
-                        <a class="btn btn-primary" href="#contact">Hire me</a>
-                        <a class="btn btn-outline" href="#projects">View Work</a>
+                    <div class="badge-status">
+                        <span class="badge-dot"></span>
+                        Open for hire
                     </div>
-                    <div class="tech-stack-mini">
-                        <span>Angular</span>
-                        <span class="divider">•</span>
-                        <span>Django</span>
-                        <span class="divider">•</span>
-                        <span>React</span>
-                        <span class="divider">•</span>
-                        <span>Shopify</span>
-                        <span class="divider">•</span>
-                        <span>E-Commerce</span>
+                    <div class="hero-cursive">hello, i am</div>
+                    <h1 class="hero-title">SHIJAR</h1>
+                    
+                    <div class="hero-footer-grid">
+                        <div class="hero-footer-col">
+                            <p>I design and build high-performance web applications, bridging the gap between clean frontend interactions and robust full-stack architecture.</p>
+                        </div>
+                        <div class="hero-footer-col">
+                            <strong>4+ Years Experience</strong>
+                            <span>Based in Kochi, India</span>
+                        </div>
+                        <div class="hero-footer-col">
+                            <strong>Angular · Django · React</strong>
+                            <span>Frontend & Full-stack Engineer</span>
+                        </div>
                     </div>
                 </div>
+                
                 <div class="hero-visual hidden-element delay-100">
-                    <div class="avatar-circle">
-                        <span class="initials">
-                            <img src="./assets/profile.webp" alt="Profile">
-                        </span>
-                    </div>
-                    <div class="floating-card card-1">
-                        <span>⚡ Fast Performance</span>
-                    </div>
-                    <div class="floating-card card-2">
-                        <span>💎 Clean UX</span>
+                    <div class="profile-card-framer">
+                        <div class="profile-img-wrap">
+                            <img src="./assets/profile.webp" alt="Shijar Muhammed K">
+                            <div class="profile-bg-curves"></div>
+                        </div>
+                        <div class="profile-name-tag">
+                            <h3>Shijar Muhammed K</h3>
+                            <p>Building 0 ➔ 1 products</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="about" class="section-light">
+        <!-- Projects Section (Dark Section) -->
+        <section id="projects" class="section-dark-bg">
             <div class="container">
                 <div class="section-header center hidden-element">
-                    <h2>About Me</h2>
-                    <p>I bridge the gap between complex back-end logic and buttery-smooth frontend animations. With a
-                        background in Angular, React, Django and Flask, I build apps that are not just functional, but
-                        intuitive.</p>
+                    <div class="section-label-cursive">featured work</div>
+                    <h2 class="section-title-big">PROJECTS</h2>
                 </div>
-
-                <div class="about-grid">
-                    <div class="card about-card hidden-element">
-                        <h3>The Developer</h3>
-                        <p class="muted">I specialize in building end-to-end web apps using Angular for the frontend and
-                            Django for the backend. My approach is user-centric, focusing on accessibility, speed, and
-                            maintainable code.</p>
-                    </div>
-                    <div class="card stats-card hidden-element delay-100">
-                        <div class="stat-item">
-                            <strong class="counter" data-target="4" data-suffix="+">1</strong>
-                            <span>Years Exp.</span>
-                        </div>
-                        <div class="stat-item">
-                            <strong class="counter" data-target="17" data-suffix="+">1</strong>
-                            <span>Projects</span>
-                        </div>
-                        <div class="stat-item">
-                            <strong>Kochi</strong>
-                            <span>Based in India</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="section-white">
-            <div class="container">
-                <div class="section-header hidden-element">
-                    <h2>Technical Skills</h2>
-                </div>
-                <div class="skills-grid">
-                    <div class="skill-card hidden-element">
-                        <div class="icon-box">
-                            <img src="./assets/angular.png" alt="Angular">
-                        </div>
-                        <h4>Angular</h4>
-                        <p>Components, RxJS, Forms</p>
-                    </div>
-
-                    <div class="skill-card hidden-element delay-100">
-                        <div class="icon-box">
-                            <img src="./assets/react.svg" alt="React">
-                        </div>
-                        <h4>React</h4>
-                        <p>Hooks, Redux, Next.js</p>
-                    </div>
-
-                    <div class="skill-card hidden-element delay-200">
-                        <div class="icon-box">
-                            <img src="./assets/python.png" alt="Django">
-                        </div>
-                        <h4>Python</h4>
-                        <p>Django, Flask, REST Framework, ORM</p>
-                    </div>
-
-                    <div class="skill-card hidden-element delay-300">
-                        <div class="icon-box">
-                            <img src="./assets/shopify.avif" alt="shopify">
-                        </div>
-                        <h4>Shopify</h4>
-                        <p>Liquid, Headless, Themes</p>
-                    </div>
-
-                    <div class="skill-card hidden-element">
-                        <div class="icon-box">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#0B1220" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                <path
-                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h4>WebRTC</h4>
-                        <p>Realtime Streaming</p>
-                    </div>
-
-                    <div class="skill-card hidden-element delay-100">
-                        <div class="icon-box">
-                            <img src="./assets/html.svg" alt="html">
-                        </div>
-                        <h4>Frontend Core</h4>
-                        <p>HTML5, Tailwind, SCSS</p>
-                    </div>
-
-                    <div class="skill-card hidden-element delay-200">
-                        <div class="icon-box">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="#336791" stroke-width="2">
-                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-                            </svg>
-                        </div>
-                        <h4>Databases</h4>
-                        <p>PostgreSQL, MySQL</p>
-                    </div>
-
-                    <div class="skill-card hidden-element delay-300">
-                        <div class="icon-box">
-                            <img src="./assets/devops.svg" alt="devops">
-                        </div>
-                        <h4>DevOps</h4>
-                        <p>Docker, Git, CI/CD</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="section-light">
-            <div class="container">
-                <div class="section-header hidden-element">
-                    <h2>Major Projects</h2>
-                </div>
+                
                 <div class="projects-grid">
-
-                    <article class="project-card hidden-element delay-100" data-name="IndApp" data-private="true">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/indapp.svg" alt="IA">
-                                </span>
-                                <h3>IndApp</h3>
+                    <article class="project-card hidden-element" data-name="IndApp" data-private="true">
+                        <div class="project-card-image-wrap card-gradient-1">
+                            <span class="project-card-badge">Private</span>
+                            <div class="project-logo">
+                                <img src="./assets/indapp.svg" alt="IA">
                             </div>
-                            <p>A multi-platform business management and customer-interaction system built for
-                                organisations that require a unified platform across web and mobile.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>INDAPP</h3>
                             <div class="tags">
                                 <span class="tag">Angular</span>
                                 <span class="tag">Django</span>
                                 <span class="tag">PostgreSQL</span>
                             </div>
+                            <p>A multi-platform business management and customer-interaction system built for organisations that require a unified platform across web and mobile.</p>
                         </div>
                     </article>
 
                     <article class="project-card hidden-element" data-name="Fund Transfer Platform" data-private="true">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/fundtransfer.png" alt="FT">
-                                </span>
-                                <h3>Fund Transfer Platform</h3>
+                        <div class="project-card-image-wrap card-gradient-2">
+                            <span class="project-card-badge">Private</span>
+                            <div class="project-logo">
+                                <img src="./assets/fundtransfer.png" alt="FT">
                             </div>
-                            <p>A secure, scalable application for wallet-based transfers, internal fund movements, and
-                                transaction management for users and admins. Built with Angular and a Flask backend
-                                using MySQL.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>FUND TRANSFER PLATFORM</h3>
                             <div class="tags">
                                 <span class="tag">Angular</span>
                                 <span class="tag">Flask</span>
                                 <span class="tag">MySQL</span>
                             </div>
+                            <p>A secure, scalable application for wallet-based transfers, internal fund movements, and transaction management for users and admins.</p>
                         </div>
                     </article>
 
-                    <article class="project-card hidden-element" data-name="Fund Transfer Platform" data-private="true">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/tracknfit.png" alt="TNF" class="forge-fit">
-                                </span>
-                                <h3>TrackNFit</h3>
+                    <article class="project-card hidden-element" data-name="TrackNFit" data-private="true">
+                        <div class="project-card-image-wrap card-gradient-3">
+                            <span class="project-card-badge">Private</span>
+                            <div class="project-logo">
+                                <img src="./assets/tracknfit.png" alt="TNF" class="forge-fit">
                             </div>
-                            <p>TrackNFit helps gyms and independent trainers manage clients, schedules, and
-                                run live coaching sessions using WebRTC. Built with Angular and a Django backend
-                                using MySQL.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>TRACKNFIT</h3>
                             <div class="tags">
                                 <span class="tag">Angular</span>
                                 <span class="tag">Django</span>
                                 <span class="tag">WebRTC</span>
                                 <span class="tag">MySQL</span>
                             </div>
+                            <p>TrackNFit helps gyms and independent trainers manage clients, schedules, and run live coaching sessions using WebRTC video streaming.</p>
                         </div>
                     </article>
 
-                    <article class="project-card hidden-element" data-name="ShopizStore"
-                        data-url="https://www.shopizstore.com/">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/SHOPIZ.png" alt="SS">
-                                </span>
-                                <h3>ShopizStore</h3>
+                    <article class="project-card hidden-element" data-name="ShopizStore" data-url="https://www.shopizstore.com/">
+                        <div class="project-card-image-wrap card-gradient-4">
+                            <span class="project-card-badge live">Live Link</span>
+                            <div class="project-logo">
+                                <img src="./assets/SHOPIZ.png" alt="SS">
                             </div>
-                            <p>A complete e-commerce storefront selling premium gadget accessories such as mobile cases,
-                                desk mats, and designer covers. Built with Shopify and focused on conversion and fast
-                                checkout experiences.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>SHOPIZSTORE</h3>
                             <div class="tags">
                                 <span class="tag">Shopify</span>
                                 <span class="tag">E‑commerce</span>
                             </div>
+                            <p>A complete e-commerce storefront selling premium gadget accessories such as mobile cases, desk mats, and designer covers.</p>
                         </div>
                     </article>
 
-                    <article class="project-card hidden-element delay-100" data-name="RisingRomp">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/rising_romp.png" alt="RR">
-                                </span>
-                                <h3>RisingRomp</h3>
+                    <article class="project-card hidden-element" data-name="RisingRomp">
+                        <div class="project-card-image-wrap card-gradient-5">
+                            <span class="project-card-badge active">Prototype</span>
+                            <div class="project-logo">
+                                <img src="./assets/rising_romp.png" alt="RR">
                             </div>
-                            <p>Online brand specialising in automotive accessories (car mirror hangings, gel/acrylic
-                                designer hangers) and premium phone accessories such as glass cases. Featured on
-                                risingromp.com — a Shopify store optimized for merchandising and product discovery.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>RISINGROMP</h3>
                             <div class="tags">
                                 <span class="tag">Shopify</span>
                                 <span class="tag">Merchandising</span>
                             </div>
+                            <p>Online brand specialising in automotive accessories and premium phone accessories. Featuring custom product discovery templates.</p>
                         </div>
                     </article>
 
                     <article class="project-card hidden-element" data-name="ForgeFit" data-url="https://forgefit.app">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/forgefit.png" alt="FF" class="forge-fit">
-                                </span>
-                                <h3>ForgeFit</h3>
+                        <div class="project-card-image-wrap card-gradient-6">
+                            <span class="project-card-badge live">Live Link</span>
+                            <div class="project-logo">
+                                <img src="./assets/forgefit.png" alt="FF" class="forge-fit">
                             </div>
-                            <p>A modern, high-conversion landing page promoting the upcoming ForgeFit fitness app.
-                                Focused on fast load, strong visuals, and capturing early sign-ups.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>FORGEFIT</h3>
                             <div class="tags">
                                 <span class="tag">React</span>
                                 <span class="tag">Landing Page</span>
                             </div>
+                            <p>A modern, high-conversion landing page promoting the upcoming ForgeFit fitness app. Focused on fast load times and captured early sign-ups.</p>
                         </div>
                     </article>
 
-                    <article class="project-card hidden-element delay-100" data-name="Woodsman Decor"
-                        data-url="https://woodsmandecor.com/">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/woodsman.png" alt="WD">
-                                </span>
-                                <h3>Woodsman Decor</h3>
+                    <article class="project-card hidden-element" data-name="Woodsman Decor" data-url="https://woodsmandecor.com/">
+                        <div class="project-card-image-wrap card-gradient-1">
+                            <span class="project-card-badge live">Live Link</span>
+                            <div class="project-logo">
+                                <img src="./assets/woodsman.png" alt="WD">
                             </div>
-                            <p>A premium furniture and interior solutions website developed for the Indian market,
-                                showcasing handcrafted collections with a focus on elegant design, seamless navigation,
-                                and brand identity.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>WOODSMAN DECOR</h3>
                             <div class="tags">
                                 <span class="tag">WordPress</span>
                                 <span class="tag">WooCommerce</span>
                                 <span class="tag">PHP</span>
-                                <span class="tag">Elementor</span>
                             </div>
+                            <p>A premium e-commerce and furniture showroom website tailored for the Indian luxury interior design market.</p>
                         </div>
                     </article>
 
-                    <article class="project-card hidden-element delay-100" data-name="Woodsman Decor Bali"
-                        data-onprogress="true">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/woodsman.png" alt="WB">
-                                </span>
-                                <h3>Woodsman Decor Bali</h3>
+                    <article class="project-card hidden-element" data-name="Woodsman Decor Bali" data-onprogress="true">
+                        <div class="project-card-image-wrap card-gradient-2">
+                            <span class="project-card-badge active">Prototype</span>
+                            <div class="project-logo">
+                                <img src="./assets/woodsman.png" alt="WB">
                             </div>
-                            <p>A modern web platform built for an international furniture brand in Bali, delivering a
-                                premium digital experience to showcase sustainable handcrafted furniture and enhance
-                                customer engagement.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>WOODSMAN DECOR BALI</h3>
                             <div class="tags">
                                 <span class="tag">React</span>
-                                <span class="tag">JavaScript</span>
                                 <span class="tag">REST APIs</span>
-                                <span class="tag">Responsive Design</span>
                             </div>
+                            <p>A modern web platform built for an international sustainable furniture brand in Bali. Developed to deliver a premium showcase with custom layout components.</p>
                         </div>
                     </article>
 
-                    <article class="project-card hidden-element delay-100" data-name="Tryon Fitness"
-                        data-onprogress="true">
-                        <div class="project-content">
-                            <div class="project-header">
-                                <span class="project-logo">
-                                    <img src="./assets/tryon.png" alt="TF">
-                                </span>
-                                <h3>Tryon Fitness</h3>
+                    <article class="project-card hidden-element" data-name="Tryon Fitness" data-onprogress="true">
+                        <div class="project-card-image-wrap card-gradient-3">
+                            <span class="project-card-badge active">Prototype</span>
+                            <div class="project-logo">
+                                <img src="./assets/tryon.png" alt="TF">
                             </div>
-                            <p>A modern and premium fitness platform developed for a high-end gym brand, delivering an
-                                immersive digital experience with elegant design, responsive layouts, and seamless user
-                                interactions.</p>
+                        </div>
+                        <div class="project-card-details">
+                            <h3>TRYON FITNESS</h3>
                             <div class="tags">
                                 <span class="tag">React</span>
-                                <span class="tag">JavaScript</span>
-                                <span class="tag">Responsive Design</span>
                                 <span class="tag">UI/UX</span>
                             </div>
+                            <p>A premium digital experience and layout system designed for high-end fitness clubs, prioritizing custom interactions and bookings.</p>
                         </div>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="section-white">
+        <!-- Skills Slider Section (Light Section with Scroll effect) -->
+        <section id="skills" class="section-light-bg">
+            <div class="skills-sticky-container">
+                <div class="container">
+                    <div class="section-header hidden-element">
+                        <div class="section-label-cursive">my expertise</div>
+                        <h2 class="section-title-big">SKILLS & TECH</h2>
+                    </div>
+                </div>
+                
+                <div class="designs-outer-container">
+                    <div class="designs-scroll-wrapper">
+                        <div class="design-slide-card">
+                            <div class="slide-img-box card-gradient-1">
+                                <img src="./assets/angular.png" alt="Angular">
+                            </div>
+                            <div class="slide-info">
+                                <h4>Angular</h4>
+                                <span>Frontend Framework · SPAs</span>
+                            </div>
+                        </div>
+
+                        <div class="design-slide-card">
+                            <div class="slide-img-box card-gradient-2">
+                                <img src="./assets/django.png" alt="Django">
+                            </div>
+                            <div class="slide-info">
+                                <h4>Django</h4>
+                                <span>Backend REST APIs · Python</span>
+                            </div>
+                        </div>
+
+                        <div class="design-slide-card">
+                        <div class="slide-img-box card-gradient-3">
+                            <svg width="50" height="50" viewBox="-10.5 -9.45 21 18.9" fill="none" xmlns="http://www.w3.org/2000/svg" style="color: #61dafb;"><circle cx="0" cy="0" r="2" fill="currentColor"></circle><g stroke="currentColor" stroke-width="1" fill="none"><ellipse rx="10" ry="4.5"></ellipse><ellipse rx="10" ry="4.5" transform="rotate(60)"></ellipse><ellipse rx="10" ry="4.5" transform="rotate(120)"></ellipse></g></svg>
+                        </div>
+                        <div class="slide-info">
+                            <h4>React</h4>
+                            <span>UI Library · Hooks & State</span>
+                        </div>
+                    </div>
+
+                        <div class="design-slide-card">
+                            <div class="slide-img-box card-gradient-4">
+                                <img src="./assets/python.png" alt="Python">
+                            </div>
+                            <div class="slide-info">
+                                <h4>Python</h4>
+                                <span>General Programming & Scripting</span>
+                            </div>
+                        </div>
+
+                        <div class="design-slide-card">
+                            <div class="slide-img-box card-gradient-5">
+                                <img src="./assets/shopify.avif" alt="Shopify">
+                            </div>
+                            <div class="slide-info">
+                                <h4>Shopify</h4>
+                                <span>E-commerce · Liquid Templates</span>
+                            </div>
+                        </div>
+
+                        <div class="design-slide-card">
+                            <div class="slide-img-box card-gradient-6">
+                                <img src="./assets/html.svg" alt="Frontend Core">
+                            </div>
+                            <div class="slide-info">
+                                <h4>Frontend Core</h4>
+                                <span>HTML5 · CSS3 · ES6+ JavaScript</span>
+                            </div>
+                        </div>
+
+                        <div class="design-slide-card">
+                            <div class="slide-img-box card-gradient-1">
+                                <img src="./assets/devops.svg" alt="DevOps" style="filter: invert(1);">
+                            </div>
+                            <div class="slide-info">
+                                <h4>DevOps & Deployment</h4>
+                                <span>Docker · Git · Cloud Hosting</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- About Me Section (Light Section) -->
+        <section id="about" class="section-light-bg">
+            <div class="container">
+                <div class="section-header hidden-element">
+                    <div class="section-label-cursive">here's a little bit</div>
+                    <h2 class="section-title-big">ABOUT ME</h2>
+                </div>
+                
+                <div class="about-grid-framer">
+                    <div class="about-desc-col hidden-element">
+                        <p class="about-paragraph-lead">I am a developer who loves balancing visual pixel precision, frontend interaction constraints, and server logic architecture to build clean digital products.</p>
+                        <p class="about-paragraph-sub">I specialize in scaling single-page Angular and React apps, integrating them with Python Django/Flask REST frameworks, and developing custom e-commerce templates on Shopify. My design focus centers on speed, user analytics, and micro-animations that respond naturally to user actions.</p>
+                    </div>
+                    
+                    <div class="about-sticky-col hidden-element delay-100">
+                        <div class="sticky-note-card">
+                            <div class="sticky-note-pin"></div>
+                            <p class="sticky-note-text">
+                                <strong>Fun part :)</strong><br>
+                                I travel quite a bit, love playing sports, and am always curious about exploring new places, listening to tech podcasts, and testing out the latest interactive layouts.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Graphic photo/placeholder cards grid -->
+                <div class="about-visuals-row hidden-element delay-200">
+                    <div class="visual-photo-card card-gradient-1">
+                        <span>⚡ Clean Interfaces</span>
+                    </div>
+                    <div class="visual-photo-card card-gradient-2">
+                        <span>✦ Smooth Scrolling</span>
+                    </div>
+                    <div class="visual-photo-card card-gradient-3">
+                        <span>🚀 Scalable Core APIs</span>
+                    </div>
+                    <div class="visual-photo-card card-gradient-4">
+                        <span>📊 Detailed UX Metrics</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Footer Section (Dark Section with custom color-glow accent) -->
+        <section id="contact" class="section-dark-bg contact-glow-section">
             <div class="container contact-container">
                 <div class="contact-info hidden-element">
-                    <h2>Let's work together</h2>
-                    <p class="lead-sm">Have a project in mind? I'm available for freelance and remote opportunities.</p>
-
+                    <div class="section-label-cursive">lets build something</div>
+                    <h2 class="section-title-big">ALWAYS CURIOUS ABOUT HOW THINGS WORK</h2>
+                    
                     <div class="contact-details">
                         <div class="contact-item">
-                            <strong>Email</strong>
+                            <strong>Send an Email</strong>
                             <a href="mailto:shijarmuhammed.k@gmail.com">shijarmuhammed.k@gmail.com</a>
-                        </div>
-                        <div class="contact-item social-links">
-                            <span>
-                                <strong>Github</strong>
-                                <a class="contact-link" href="https://github.com/shijar-muhammed-k" data-name="GitHub"
-                                    aria-label="GitHub">
-                                    <img src="./assets/github.svg" alt="Github">
-                                </a>
-                            </span>
-                            <span>
-                                <strong>LinkedIn</strong>
-                                <a class="contact-link" href="https://www.linkedin.com/in/shijar-muhammed-k/"
-                                    data-name="LinkedIn" aria-label="LinkedIn">
-                                    <img src="./assets/linkedin.svg" alt="LinkedIn">
-                                </a>
-                            </span>
-                            <span>
-                                <strong>Instagram</strong>
-                                <a class="contact-link"
-                                    href="https://www.instagram.com/_shijar__?igsh=MWdla3Y3cHJlamZmcg=="
-                                    data-name="Instagram" aria-label="Instagram">
-                                    <img src="./assets/instagram.png" alt="Instagram">
-                                </a>
-                            </span>
                         </div>
                         <div class="contact-item">
                             <strong>Location</strong>
@@ -492,30 +473,48 @@
                 <div class="contact-form-wrapper hidden-element delay-100">
                     <form id="contact-form" action="https://formspree.io/f/mdkjnknw" method="POST" class="modern-form">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input id="name" name="name" type="text" placeholder="John Doe" required>
+                            <input id="name" name="name" type="text" placeholder="Your Name" required>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" placeholder="john@example.com" required>
+                            <input id="email" name="email" type="email" placeholder="Your Email" required>
                         </div>
                         <div class="form-group">
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Tell me about your project..."
+                            <textarea id="message" name="message" rows="3" placeholder="Tell me about your project..."
                                 required></textarea>
                         </div>
-                        <button class="btn btn-primary btn-block" type="submit">Send Message</button>
+                        <button class="btn btn-primary btn-block" type="submit">Lets Connect</button>
                     </form>
+                </div>
+            </div>
+            
+            <div class="container footer-bottom-row">
+                <div class="footer-social-links">
+                    <a class="contact-link" href="https://github.com/shijar-muhammed-k" data-name="GitHub" aria-label="GitHub">
+                        <img src="./assets/github.svg" alt="Github" style="filter: invert(1);">
+                    </a>
+                    <a class="contact-link" href="https://www.linkedin.com/in/shijar-muhammed-k/" data-name="LinkedIn" aria-label="LinkedIn">
+                        <img src="./assets/linkedin.svg" alt="LinkedIn">
+                    </a>
+                    <a class="contact-link" href="https://www.instagram.com/_shijar__?igsh=MWdla3Y3cHJlamZmcg==" data-name="Instagram" aria-label="Instagram">
+                        <img src="./assets/instagram.png" alt="Instagram">
+                    </a>
+                </div>
+                <div class="footer-copyright">
+                    © 2026 Portfolio — Shijar Muhammed K
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <p>© 2026 Shijar Muhammed K. All rights reserved.</p>
+    <!-- Project Details Glass Modal -->
+    <div id="project-modal" class="project-modal-overlay" aria-hidden="true">
+        <div class="project-modal-container">
+            <button class="modal-close-btn" aria-label="Close modal">✕</button>
+            <div class="modal-body-content">
+                <!-- Content dynamically populated by scripts.js -->
+            </div>
         </div>
-    </footer>
+    </div>
 
     <script src="scripts.js"></script>
 </body>
