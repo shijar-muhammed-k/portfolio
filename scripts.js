@@ -69,23 +69,28 @@
 // ==========================================
 (function setupHorizontalScroll() {
   const slider = document.querySelector('.designs-scroll-wrapper');
-  const section = document.getElementById('skills');
-  if (!slider || !section) return;
+  const track = document.querySelector('.skills-horizontal-track') || document.getElementById('skills');
+  if (!slider || !track) return;
 
-  window.addEventListener('scroll', () => {
+  let ticking = false;
+
+  function updateScroll() {
+    ticking = false;
     if (window.innerWidth <= 900) {
       slider.style.transform = '';
       return;
     }
 
-    const rect = section.getBoundingClientRect();
-    const sectionHeight = section.offsetHeight;
+    const rect = track.getBoundingClientRect();
+    const trackHeight = track.offsetHeight;
     const windowHeight = window.innerHeight;
 
-    // Start horizontal translation when section hits sticky position (80px top)
+    // Start horizontal translation when section hits sticky position (80px top nav height)
     const stickyStart = 80;
     const scrollDistance = -rect.top + stickyStart;
-    const maxScroll = sectionHeight - windowHeight + stickyStart;
+    const maxScroll = trackHeight - windowHeight + stickyStart;
+
+    if (maxScroll <= 0) return;
 
     let fraction = scrollDistance / maxScroll;
     fraction = Math.min(Math.max(fraction, 0), 1);
@@ -96,7 +101,17 @@
       const translateX = -fraction * maxTranslate;
       slider.style.transform = `translateX(${translateX}px)`;
     }
-  });
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(updateScroll);
+      ticking = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', updateScroll);
+  updateScroll();
 })();
 
 
@@ -172,23 +187,72 @@ function showToast(message, type = 'success', timeout = 3200) {
       return;
     }
 
-    // Resolve description text
+    // Extended project details lookup
+    const projectDetailsMap = {
+      'Reverse Vending Collector (RVC)': {
+        desc: 'Refactored Angular management systems using Standalone Components, reusable components and Reactive Forms. Developed scalable Angular dashboards and management interfaces for monitoring operational data with optimized caching strategies and standardized reusable UI services.',
+        bullets: [
+          'Refactored Angular management systems using Standalone Components, reusable components and Reactive Forms.',
+          'Developed scalable Angular dashboards and management interfaces for monitoring operational data.',
+          'Implemented optimized caching strategies to reduce redundant API requests and improve application responsiveness.',
+          'Integrated frontend workflows with REST APIs for real-time operational data.',
+          'Improved maintainability by standardizing reusable UI components and application-level services.'
+        ]
+      },
+      'SRNPack (Statiegeld Nederlands)': {
+        desc: 'Enterprise monitoring dashboards for operational reporting and system monitoring in the Netherlands circular recycling ecosystem. Optimized API integration and frontend data handling to minimize redundant server requests.',
+        bullets: [
+          'Developed scalable Angular monitoring dashboards for operational reporting and system monitoring.',
+          'Optimized API integration and frontend data handling to reduce unnecessary server requests.',
+          'Created reusable Angular data modules and UI components for consistent functionality across deployments.',
+          'Implemented responsive interfaces and reusable form-based workflows.',
+          'Worked with backend APIs to support data-driven operational workflows and reporting.'
+        ]
+      },
+      'SmartLearn LMS': {
+        desc: 'Feature-rich enterprise Learning Management System built with Angular and REST APIs, supporting multi-tier role-based access control and real-time user management.',
+        bullets: [
+          'Developed a feature-rich Learning Management System using Angular and REST APIs.',
+          'Implemented role-based access control (RBAC) and secure application workflows.',
+          'Developed reusable Angular components, Reactive Forms, services and route guards.',
+          'Integrated frontend functionality with backend APIs for user management, course management and reporting.',
+          'Designed responsive interfaces for different user roles and screen sizes.'
+        ]
+      },
+      'StreamItNow': {
+        desc: 'High-traffic live streaming web application for content creators and online events, with custom video canvas rendering and Picture-in-Picture support.',
+        bullets: [
+          'Developed Angular-based web application functionality for a streaming platform supporting content creators and online events.',
+          'Integrated frontend applications with REST APIs for event management, user workflows and payment functionality.',
+          'Implemented reusable UI components and responsive layouts.',
+          'Worked on live-streaming functionality including Canvas rendering and Picture-in-Picture (PiP).',
+          'Optimized frontend workflows to improve usability and performance during high-traffic events.'
+        ]
+      }
+    };
+
+    // Resolve description & bullet text
     let descText = card.querySelector('p')?.textContent || '';
-    if (!descText) {
+    let bulletsHTML = '';
+
+    const matchedKey = Object.keys(projectDetailsMap).find(k => name.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(name.toLowerCase()));
+    if (matchedKey && projectDetailsMap[matchedKey]) {
+      const match = projectDetailsMap[matchedKey];
+      descText = match.desc;
+      if (match.bullets && match.bullets.length > 0) {
+        bulletsHTML = `
+          <div class="modal-info-panel" style="margin-top: 16px;">
+            <div class="modal-info-title">⚡ Key Engineering Highlights</div>
+            <ul style="margin: 0; padding-left: 20px; color: var(--dark-text-muted); font-size: 0.9rem; line-height: 1.6;">
+              ${match.bullets.map(b => `<li style="margin-bottom: 6px;">${b}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }
+    } else if (!descText) {
       const gridCard = document.querySelector(`.project-card[data-name="${name}"]`);
       if (gridCard) {
         descText = gridCard.querySelector('p')?.textContent || '';
-      } else {
-        // Mock default copy for slide items
-        if (name.includes('Woodsman Decor Bali')) {
-          descText = 'A modern web platform built for an international sustainable furniture brand in Bali. Developed to deliver a premium showcase with custom layout components.';
-        } else if (name.includes('Tryon Fitness')) {
-          descText = 'A premium digital experience and layout system designed for high-end fitness clubs, prioritizing custom interactions and bookings.';
-        } else if (name.includes('Woodsman Decor')) {
-          descText = 'A premium e-commerce and furniture showroom website tailored for the Indian luxury interior design market.';
-        } else {
-          descText = 'A digital layout concept designed to elevate usability, focus visual structure, and simplify core client requirements.';
-        }
       }
     }
 
@@ -197,7 +261,6 @@ function showToast(message, type = 'success', timeout = 3200) {
     const tagElements = card.querySelectorAll('.tag, .slide-info span');
     if (tagElements.length > 0) {
       tagElements.forEach(t => {
-        // Clean tag strings if they come from the slider description
         const tags = t.textContent.split('·').map(str => str.trim());
         tags.forEach(tag => {
           if (tag && !tag.includes('In Development') && !tag.includes('In Progress') && !tag.includes('NDA')) {
@@ -210,24 +273,27 @@ function showToast(message, type = 'success', timeout = 3200) {
     // Resolve Logo
     let logoHTML = '';
     const logoImg = card.querySelector('.project-logo img, .slide-img-box img');
+    const monogramEl = card.querySelector('.project-logo-monogram');
     if (logoImg) {
       const artAlt = logoImg.alt || 'Logo';
       const needFilter = artAlt === 'WB' || artAlt === 'TNF' || artAlt === 'FF' || artAlt === 'WD';
       logoHTML = `<img src="${logoImg.src}" alt="${artAlt}" style="${needFilter ? 'filter: invert(1);' : ''}">`;
+    } else if (monogramEl) {
+      logoHTML = `<div class="modal-logo-initials">${monogramEl.textContent.trim()}</div>`;
     } else {
-      logoHTML = `<div class="modal-logo-initials">${name.substring(0, 2)}</div>`;
+      logoHTML = `<div class="modal-logo-initials">${name.substring(0, 3)}</div>`;
     }
 
     let statusBadge = '';
     let explanationHTML = '';
 
     if (isPrivate) {
-      statusBadge = '<span class="modal-status-badge private">NDA Protected</span>';
+      statusBadge = '<span class="modal-status-badge private">Enterprise / NDA Protected</span>';
       explanationHTML = `
         <div class="modal-info-panel">
-          <div class="modal-info-title">🔒 Corporate Client Project</div>
+          <div class="modal-info-title">🔒 Enterprise Project</div>
           <div class="modal-info-text">
-            This project is protected under non-disclosure terms. The source code, repository layout, and live environment credentials are kept private. For discussions on technical patterns used, feel free to reach out.
+            This project is part of proprietary client/enterprise solutions. Source code, production endpoints, and customer data are secured under non-disclosure. Reach out to discuss architectural patterns, state strategies, and performance gains.
           </div>
         </div>
       `;
@@ -242,12 +308,12 @@ function showToast(message, type = 'success', timeout = 3200) {
         </div>
       `;
     } else {
-      statusBadge = '<span class="modal-status-badge private">Protected Prototype</span>';
+      statusBadge = '<span class="modal-status-badge private">Showcase Project</span>';
       explanationHTML = `
         <div class="modal-info-panel">
-          <div class="modal-info-title">📂 Concept Mockup</div>
+          <div class="modal-info-title">📂 Technical Walkthrough</div>
           <div class="modal-info-text">
-            This system design is hosted internally. If you would like to request a screen walkthrough or code outline, click below.
+            Interested in a detailed walkthrough of this project's architecture, UI state models, or REST integration patterns? Let's connect!
           </div>
         </div>
       `;
@@ -264,6 +330,7 @@ function showToast(message, type = 'success', timeout = 3200) {
         </div>
       </div>
       <div class="modal-desc">${descText}</div>
+      ${bulletsHTML}
       ${explanationHTML}
       <div class="modal-tags">
         ${tagsHTML}
