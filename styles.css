@@ -451,6 +451,62 @@ h4 {
     text-align: center;
 }
 
+/* --- Project Category Filter Tabs --- */
+.project-filter-tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 36px 0 52px;
+}
+
+.filter-tab {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    color: var(--dark-text-muted);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+    font-family: "Plus Jakarta Sans", sans-serif;
+    letter-spacing: 0.01em;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.filter-tab:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--dark-text-main);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.filter-tab.active {
+    background: var(--coral);
+    border-color: var(--coral);
+    color: #ffffff;
+    box-shadow: 0 4px 18px rgba(230, 62, 72, 0.35);
+}
+
+.filter-count {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-weight: 800;
+}
+
+.filter-tab.active .filter-count {
+    background: rgba(0, 0, 0, 0.25);
+    color: #ffffff;
+}
+
 /* --- Staggered Projects Grid --- */
 .projects-grid {
     display: grid;
@@ -462,12 +518,17 @@ h4 {
     display: flex;
     flex-direction: column;
     background: transparent;
-    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.3s ease;
+    cursor: pointer;
+}
+
+.project-card.is-hidden {
+    display: none !important;
 }
 
 /* Stagger Offset on Desktop */
 @media (min-width: 901px) {
-    .project-card:nth-child(even) {
+    .project-card.stagger-even {
         margin-top: 65px;
     }
 }
@@ -584,6 +645,45 @@ h4 {
     background: rgba(245, 158, 11, 0.15);
     border-color: rgba(245, 158, 11, 0.3);
     color: #fbbf24;
+}
+
+.project-card-badge.fullstack {
+    background: rgba(59, 130, 246, 0.18);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #93c5fd;
+}
+
+.project-card-badge.completed {
+    background: rgba(16, 185, 129, 0.18);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #6ee7b7;
+}
+
+.project-card-badge.prototype {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+}
+
+.project-category-meta {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--coral);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.project-category-meta::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--coral);
 }
 
 /* Card details (below image) */
@@ -1449,17 +1549,33 @@ h4 {
 }
 
 .project-modal-container {
-    background: rgba(9, 10, 15, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(9, 10, 15, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px -10px rgba(230, 62, 72, 0.15);
     border-radius: 24px;
     width: 100%;
-    max-width: 620px;
+    max-width: 660px;
+    max-height: 90vh;
+    overflow-y: auto;
     position: relative;
     transform: scale(0.9) translateY(20px);
     opacity: 0;
     transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.4s ease;
-    overflow: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+}
+
+.project-modal-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.project-modal-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.project-modal-container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
 }
 
 .project-modal-overlay.open .project-modal-container {

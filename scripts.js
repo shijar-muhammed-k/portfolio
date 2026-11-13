@@ -161,6 +161,56 @@ function showToast(message, type = 'success', timeout = 3200) {
 
 
 // ==========================================
+// 5.5. Project Categorization & Filtering
+// ==========================================
+(function setupProjectFiltering() {
+  const filterTabs = document.querySelectorAll('.filter-tab');
+  const projectCards = document.querySelectorAll('.project-card');
+
+  if (!filterTabs.length || !projectCards.length) return;
+
+  function updateStagger() {
+    if (window.innerWidth <= 900) {
+      projectCards.forEach(c => c.classList.remove('stagger-even'));
+      return;
+    }
+    const visibleCards = Array.from(projectCards).filter(c => !c.classList.contains('is-hidden'));
+    visibleCards.forEach((card, idx) => {
+      if (idx % 2 === 1) {
+        card.classList.add('stagger-even');
+      } else {
+        card.classList.remove('stagger-even');
+      }
+    });
+  }
+
+  // Initial stagger alignment
+  updateStagger();
+  window.addEventListener('resize', updateStagger);
+
+  filterTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      filterTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      const filterCategory = tab.dataset.filter || 'all';
+
+      projectCards.forEach(card => {
+        const cardCategory = card.dataset.category;
+        if (filterCategory === 'all' || cardCategory === filterCategory) {
+          card.classList.remove('is-hidden');
+        } else {
+          card.classList.add('is-hidden');
+        }
+      });
+
+      updateStagger();
+    });
+  });
+})();
+
+
+// ==========================================
 // 6. Project Cards Details & Modals
 // ==========================================
 (function setupProjectModals() {
@@ -170,105 +220,268 @@ function showToast(message, type = 'success', timeout = 3200) {
 
   if (!modalOverlay || !modalBody) return;
 
+  // Extended project details lookup for all production & case-study projects
+  const projectDetailsMap = {
+    'Reverse Vending Collector (RVC)': {
+      category: 'Enterprise Application',
+      stack: ['Angular 18+', 'Standalone Components', 'Signals', 'Reactive Forms', 'REST APIs', 'TypeScript'],
+      status: 'Enterprise · Active',
+      statusType: 'enterprise',
+      problem: 'Managing and monitoring dispersed fleets of automated reverse vending recycling machines required low-latency operational dashboards, real-time telemetry, and resilient client-side state.',
+      bullets: [
+        'Refactored enterprise Angular management architecture using Standalone Components and reactive Signals, streamlining change detection performance and dependency injection.',
+        'Engineered high-throughput operational monitoring dashboards with dynamic multi-parameter filtering and live status tracking.',
+        'Implemented client-side caching strategies and HTTP interceptors to eliminate redundant polling requests and decrease network overhead.',
+        'Developed reusable Reactive Forms with strict validation schemas for machine telemetry, device configuration, and firmware tracking.',
+        'Standardized shared UI services and layout modules across multiple enterprise management sub-applications.'
+      ]
+    },
+    'SRNPack (Statiegeld Nederlands)': {
+      category: 'Enterprise Application',
+      stack: ['Angular', 'RxJS', 'REST APIs', 'Enterprise Dashboards', 'Performance Profiling'],
+      status: 'Enterprise · Active',
+      statusType: 'enterprise',
+      problem: 'Operational reporting and audit tracking for the national deposit return recycling network in the Netherlands, processing millions of packaging records requiring real-time visibility.',
+      metric: 'Verified 37.5% reduction in DOMContentLoaded (lowered from 4.0s to 2.5s) via route-level code splitting, asset payload optimization, and RxJS subscription optimization.',
+      bullets: [
+        'Achieved verified 37.5% reduction in DOMContentLoaded (lowered from 4.0s to 2.5s) through stream restructuring, targeted lazy loading, and asset payload optimization.',
+        'Developed scalable enterprise monitoring dashboards for operational reporting and real-time state metrics across the national recycling network.',
+        'Streamlined data handling using RxJS pipelines (switchMap, debounceTime, shareReplay) to eliminate duplicate server requests under heavy concurrent reporting.',
+        'Created standardized, reusable Angular data table modules and form workflows deployed across multiple operational hubs.',
+        'Integrated complex backend REST API contracts to reliably deliver multi-region auditing telemetry.'
+      ]
+    },
+    'SmartLearn LMS': {
+      category: 'Enterprise Application',
+      stack: ['Angular', 'Reactive Forms', 'Route Guards', 'RBAC', 'REST APIs', 'TypeScript'],
+      status: 'Enterprise LMS',
+      statusType: 'enterprise',
+      problem: 'Educational institutions and corporate training entities needed a secure, role-delineated learning management system for curriculum delivery, assessment tracking, and administrative governance.',
+      bullets: [
+        'Engineered multi-tier Role-Based Access Control (RBAC) supporting Administrators, Instructors, and Students with fine-grained route guards.',
+        'Built complex Reactive Forms for course creation, assignment evaluation, and assessment submission with dynamic validation rules.',
+        'Implemented HTTP Interceptors for seamless JWT token attachment, automated token refreshing, and centralized error handling.',
+        'Designed responsive, accessible desktop and tablet interfaces ensuring consistent accessibility across interactive study modules.',
+        'Integrated frontend functionality with backend RESTful APIs for user provisioning, course catalog management, and student performance reporting.'
+      ]
+    },
+    'StreamItNow': {
+      category: 'Enterprise Application',
+      stack: ['Angular', 'HTML5 Canvas', 'Picture-in-Picture (PiP)', 'REST APIs', 'Payment Gateways'],
+      status: 'Live Streaming',
+      statusType: 'enterprise',
+      problem: 'High-traffic live video streaming platform requiring low-latency interactive overlays, continuous playback during user navigation, and integrated pay-per-view monetization.',
+      bullets: [
+        'Engineered HTML5 Canvas rendering engine for dynamic video watermarking, interactive branding, and graphic overlays during live broadcasts.',
+        'Implemented native Picture-in-Picture (PiP) APIs allowing continuous, uninterrupted video playback while users browse schedules and chats.',
+        'Optimized high-concurrency client state handling and event-driven data flows to prevent UI frame drops during spike traffic events.',
+        'Integrated secure payment gateway workflows for real-time ticket purchases, subscription passes, and creator tipping.',
+        'Built modular, reusable video control UI components and responsive viewer layouts across mobile and desktop viewports.'
+      ]
+    },
+    'Visitor Registration & Management System': {
+      category: 'Enterprise Application',
+      stack: ['Angular', 'Django REST Framework', 'PostgreSQL', 'Docker', 'Role-Based Access'],
+      status: 'Enterprise · Completed',
+      statusType: 'completed',
+      problem: 'Enterprise facilities required a secure, digital on-premise visitor registration and compliance tracking system to replace paper visitor logs and ensure physical facility security standards.',
+      bullets: [
+        'Developed responsive Angular visitor registration interface with multi-step visitor onboarding, dynamic host lookup, and digital badge generation.',
+        'Implemented secure Django REST Framework backend APIs for visitor identity verification, check-in/check-out timestamps, and NDA acknowledgment.',
+        'Designed normalized PostgreSQL database schema with indexed audit logs, security compliance tracking, and visit history queries.',
+        'Configured containerized Docker environment ensuring consistent production deployment, volume persistence, and simplified database backups.',
+        'Integrated role-based security ensuring receptionist, security personnel, and facility administrator permission delineation.'
+      ]
+    },
+    'IndApp': {
+      category: 'Full-Stack Application',
+      stack: ['Angular', 'Django REST Framework', 'PostgreSQL', 'Docker', 'Nginx', 'JWT & RBAC'],
+      status: 'Full-Stack Platform',
+      statusType: 'fullstack',
+      problem: 'Organizations required a unified, secure platform for business registration, verified approvals, enterprise directory search, community interaction, and cross-organization financial referral requests.',
+      bullets: [
+        'Full-Stack Architecture: Engineered scalable Angular frontend application integrated with robust Django REST Framework backend and PostgreSQL database.',
+        'Authentication & Authorization: Implemented multi-role authentication and authorization with role-based privileges, secure password creation flows, and zone-based administrative hierarchy.',
+        'Business Onboarding & Approvals: Developed multi-step business registration and administrative approval workflows with document verification states.',
+        'Product Management & Search: Built comprehensive product catalog management with full-text search, category filtering, and inventory tracking.',
+        'Community & Social Engagement: Engineered interactive community feed supporting posts, media uploads, likes, and nested threaded comments.',
+        'Business Referrals & Loan Requests: Built secure financial referral workflows and institutional loan request application tracking.',
+        'DevOps & Containerization: Configured containerized Docker development and deployment environments with Nginx reverse proxy, static file routing, and SSL termination.'
+      ]
+    },
+    'VEB — Business and RFQ Management Platform': {
+      category: 'Full-Stack Application',
+      stack: ['Python', 'Django', 'PostgreSQL', 'Docker', 'Docker Compose', 'REST APIs'],
+      status: 'In Development / Prototype',
+      statusType: 'in-progress',
+      problem: 'B2B organizations need a centralized digital platform to manage organizational profiles and streamline Request for Quotation (RFQ) procurement workflows.',
+      bullets: [
+        'Architecture & Data Modeling: Designing relational PostgreSQL schemas using Django ORM to model multi-tier organizations, vendors, and RFQ document lifecycles.',
+        'RFQ Workflows: Developing structured RFQ submission, quotation bidding, status tracking, and vendor response pipelines.',
+        'Database Engineering: Handled schema migrations, data consistency constraints, and resolved complex database migration dependency conflicts.',
+        'Containerized Development: Set up isolated, reproducible multi-container environments using Docker and Docker Compose for Django, PostgreSQL, and background task workers.',
+        'Backend API Design: Created modular RESTful endpoints adhering to REST principles with structured JSON error responses.'
+      ]
+    },
+    'Stock Checker — Inventory Management System': {
+      category: 'Full-Stack Application',
+      stack: ['Angular', 'Firebase', 'Excel Import/Export (XLSX)', 'Reactive Forms'],
+      status: 'Completed Project',
+      statusType: 'completed',
+      problem: 'Multi-vendor retail operations needed a flexible, real-time inventory tracking system capable of ingesting vendor spreadsheets across diverse formats and synchronizing stock counts instantly.',
+      bullets: [
+        'Client-Side Spreadsheet Processing: Engineered robust Excel file parsing and export engine supporting multiple spreadsheet formats (.xlsx, .xls, .csv) with schema validation and error flagging.',
+        'Multi-Vendor Catalog: Built dynamic product categorization, SKU search, vendor filtering, and real-time stock alert thresholds.',
+        'Cloud Real-Time Database: Integrated Firebase for live synchronization of inventory updates across multiple concurrent terminal sessions.',
+        'User & Role Management: Implemented role-based access for warehouse staff, store managers, and vendors to prevent unauthorized stock alterations.',
+        'Reactive UI: Built with Angular Reactive Forms, custom debounced search pipelines, and responsive data tables.'
+      ]
+    },
+    'Fund Transfer Platform': {
+      category: 'Full-Stack Application',
+      stack: ['Angular', 'Flask', 'Python', 'MySQL', 'REST APIs', 'Ledger Security'],
+      status: 'Financial Web App',
+      statusType: 'fullstack',
+      problem: 'Secure internal fund movements, wallet-based transfers, and auditable financial transactions requiring strict data integrity and administrative transparency.',
+      bullets: [
+        'Engineered Angular financial dashboard with transaction wizards, dynamic validation, and real-time transfer confirmation dialogs.',
+        'Built Python/Flask RESTful backend services implementing atomic database transactions in MySQL to guarantee balance integrity.',
+        'Designed double-entry transaction ledgers ensuring complete mathematical auditability and tamper detection.',
+        'Implemented administrative dispute investigation interfaces, statement generation, and filtered transaction export.',
+        'Applied role-based authorization ensuring separation of duty between customer wallets and administrative treasury functions.'
+      ]
+    },
+    'TrackNFit': {
+      category: 'Full-Stack Application',
+      stack: ['Angular', 'Django', 'WebRTC', 'MySQL', 'REST APIs'],
+      status: 'HealthTech App',
+      statusType: 'fullstack',
+      problem: 'Fitness centers and independent personal trainers required a unified platform to manage client schedules, track training progress, and conduct live one-on-one virtual coaching sessions.',
+      bullets: [
+        'Integrated WebRTC peer-to-peer real-time video streaming for interactive live coaching sessions directly inside the browser without third-party plugins.',
+        'Developed Django REST Framework backend APIs for appointment booking, workout regimen assignments, and biometric progress logging.',
+        'Implemented MySQL relational schemas storing client health histories, trainer availability schedules, and session logs.',
+        'Built responsive Angular client portal featuring interactive calendars, workout charts, and push notifications.',
+        'Handled video stream renegotiation, connection fallback states, and microphone/camera permission flows.'
+      ]
+    },
+    'ForgeFit': {
+      category: 'Websites & E-Commerce',
+      stack: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Web Performance'],
+      status: 'Live Production',
+      statusType: 'live',
+      url: 'https://forgefit.app',
+      problem: 'A modern fitness SaaS platform required a high-converting, blazing-fast landing page to drive pre-launch user acquisition and capture verified early sign-ups.',
+      bullets: [
+        'Developed responsive, accessible landing page using modern React and TypeScript architecture.',
+        'Focused on Core Web Vitals optimization, achieving sub-second First Contentful Paint (FCP) and optimal Cumulative Layout Shift (CLS).',
+        'Built seamless, validated email capture workflow integrated with mailing list APIs.',
+        'Implemented modern micro-animations, accessible contrast ratios, and responsive mobile-first typography.',
+        'Verified production deployment with SSL/TLS and global edge CDN caching.'
+      ]
+    },
+    'ShopizStore': {
+      category: 'Websites & E-Commerce',
+      stack: ['Shopify', 'Liquid', 'JavaScript', 'E-Commerce Architecture'],
+      status: 'Live Production',
+      statusType: 'live',
+      url: 'https://www.shopizstore.com/',
+      problem: 'Consumer tech accessories brand needed a high-performance e-commerce storefront with intuitive navigation across hundreds of phone cases, desk pads, and accessories.',
+      bullets: [
+        'Developed custom Shopify Liquid theme templates optimized for high conversion and quick mobile checkout.',
+        'Built faceted product filtering (device model, color, material) with instant client-side updates.',
+        'Integrated payment gateways, inventory management hooks, and automated shipping calculations.',
+        'Optimized image assets and responsive picture elements to ensure fast page load times over mobile networks.',
+        'Customized cart drawer and cross-sell recommendation engines to increase average order value (AOV).'
+      ]
+    },
+    'Woodsman Decor': {
+      category: 'Websites & E-Commerce',
+      stack: ['WordPress', 'WooCommerce', 'PHP', 'MySQL', 'Custom CSS'],
+      status: 'Live Production',
+      statusType: 'live',
+      url: 'https://woodsmandecor.com/',
+      problem: 'Luxury bespoke furniture brand needed a digital showroom and e-commerce experience reflecting high-end artisanal craftsmanship for the Indian interior design market.',
+      bullets: [
+        'Developed custom WooCommerce showroom templates showcasing complex furniture dimensions, wood finishes, and custom order requests.',
+        'Engineered high-resolution responsive image galleries with optimized lazy loading to maintain page performance.',
+        'Configured secure payment gateway integration, GST invoice generation, and courier tracking updates.',
+        'Customized PHP hooks and filters for tailored product attributes and customer quote inquiries.',
+        'Maintained ongoing performance tuning, caching policies, and database cleanup.'
+      ]
+    },
+    'Woodsman Decor Bali': {
+      category: 'Websites & E-Commerce',
+      stack: ['React', 'REST APIs', 'CSS Architecture', 'Responsive UI'],
+      status: 'Prototype / Showcase',
+      statusType: 'prototype',
+      problem: 'An international sustainable furniture brand based in Bali, Indonesia required a modern web showcase to present eco-friendly teak and rattan collections to global interior designers.',
+      bullets: [
+        'Built modern React application featuring curated collection lookbooks and material provenance storytelling.',
+        'Created modular layout components with fluid typography and bespoke brand aesthetic styling.',
+        'Integrated RESTful product catalog feeds for real-time dimension and finish specifications.',
+        'Implemented mobile-first touch carousels and full-screen gallery inspection modes.',
+        'Designed lightweight architecture ensuring smooth rendering across global networks.'
+      ]
+    },
+    'Tryon Fitness': {
+      category: 'Websites & E-Commerce',
+      stack: ['React', 'Modern UI/UX', 'Interactive Components'],
+      status: 'Prototype / Showcase',
+      statusType: 'prototype',
+      problem: 'Premium boutique fitness clubs needed a digital experience communicating facility amenities, instructor credentials, and tier-based membership options.',
+      bullets: [
+        'Built modern React layout system prioritizing interactive member engagement and tour scheduling.',
+        'Developed dynamic membership tier comparison component with interactive perk toggling.',
+        'Implemented responsive class schedule views with trainer profiles and difficulty filters.',
+        'Styled with fluid dark-mode visual hierarchy and modern glassmorphism UI elements.',
+        'Optimized layout for mobile devices, enabling swift class booking navigation.'
+      ]
+    },
+    'RisingRomp': {
+      category: 'Websites & E-Commerce',
+      stack: ['Shopify', 'Liquid', 'E-Commerce Merchandising', 'CSS3'],
+      status: 'Active Store / Prototype',
+      statusType: 'prototype',
+      problem: 'Automotive and tech lifestyle brand needed an energetic, mobile-first storefront to showcase specialized automotive gear and premium phone accessories.',
+      bullets: [
+        'Engineered custom product discovery templates on Shopify with automotive model compatibility search.',
+        'Implemented customer review collection widgets and verified buyer badge styling.',
+        'Customized theme Liquid logic to support bundle discounts and promotional countdowns.',
+        'Streamlined mobile checkout funnel, reducing abandonment rates on mobile devices.',
+        'Configured Google Analytics and Meta pixel tracking for marketing campaign attribution.'
+      ]
+    }
+  };
+
   // Intercept click events anywhere on document to cover cards
   document.addEventListener('click', (e) => {
-    const card = e.target.closest('.project-card');
-    if (!card) return;
-
-    const name = card.dataset.name || card.querySelector('h3, h4')?.textContent || 'Project';
-    const url = card.dataset.url;
-    const isPrivate = card.dataset.private === 'true';
-    const isOnProgress = card.dataset.onprogress === 'true';
-
-    // Redirect to live URL if applicable and normal
-    if (url && !isPrivate && !isOnProgress) {
-      showToast(`Opening ${name} — opens in a new tab`, 'success', 1500);
-      window.open(url, '_blank', 'noopener');
+    // If the click was directly on an external link action, let default anchor behavior open it
+    const directLink = e.target.closest('.card-external-link');
+    if (directLink) {
       return;
     }
 
+    const card = e.target.closest('.project-card');
+    if (!card) return;
+
+    const name = card.dataset.name || card.querySelector('h3, h4')?.textContent?.trim() || 'Project';
+    const cardUrl = card.dataset.url;
+    const isPrivate = card.dataset.private === 'true';
+    const isOnProgress = card.dataset.onprogress === 'true';
+
     // Extended project details lookup
-    const projectDetailsMap = {
-      'Reverse Vending Collector (RVC)': {
-        desc: 'Refactored Angular management systems using Standalone Components, reusable components and Reactive Forms. Developed scalable Angular dashboards and management interfaces for monitoring operational data with optimized caching strategies and standardized reusable UI services.',
-        bullets: [
-          'Refactored Angular management systems using Standalone Components, reusable components and Reactive Forms.',
-          'Developed scalable Angular dashboards and management interfaces for monitoring operational data.',
-          'Implemented optimized caching strategies to reduce redundant API requests and improve application responsiveness.',
-          'Integrated frontend workflows with REST APIs for real-time operational data.',
-          'Improved maintainability by standardizing reusable UI components and application-level services.'
-        ]
-      },
-      'SRNPack (Statiegeld Nederlands)': {
-        desc: 'Enterprise monitoring dashboards for operational reporting and system monitoring in the Netherlands circular recycling ecosystem. Optimized API integration and frontend data handling to minimize redundant server requests.',
-        bullets: [
-          'Developed scalable Angular monitoring dashboards for operational reporting and system monitoring.',
-          'Optimized API integration and frontend data handling to reduce unnecessary server requests.',
-          'Created reusable Angular data modules and UI components for consistent functionality across deployments.',
-          'Implemented responsive interfaces and reusable form-based workflows.',
-          'Worked with backend APIs to support data-driven operational workflows and reporting.'
-        ]
-      },
-      'SmartLearn LMS': {
-        desc: 'Feature-rich enterprise Learning Management System built with Angular and REST APIs, supporting multi-tier role-based access control and real-time user management.',
-        bullets: [
-          'Developed a feature-rich Learning Management System using Angular and REST APIs.',
-          'Implemented role-based access control (RBAC) and secure application workflows.',
-          'Developed reusable Angular components, Reactive Forms, services and route guards.',
-          'Integrated frontend functionality with backend APIs for user management, course management and reporting.',
-          'Designed responsive interfaces for different user roles and screen sizes.'
-        ]
-      },
-      'StreamItNow': {
-        desc: 'High-traffic live streaming web application for content creators and online events, with custom video canvas rendering and Picture-in-Picture support.',
-        bullets: [
-          'Developed Angular-based web application functionality for a streaming platform supporting content creators and online events.',
-          'Integrated frontend applications with REST APIs for event management, user workflows and payment functionality.',
-          'Implemented reusable UI components and responsive layouts.',
-          'Worked on live-streaming functionality including Canvas rendering and Picture-in-Picture (PiP).',
-          'Optimized frontend workflows to improve usability and performance during high-traffic events.'
-        ]
-      }
-    };
-
-    // Resolve description & bullet text
-    let descText = card.querySelector('p')?.textContent || '';
-    let bulletsHTML = '';
-
-    const matchedKey = Object.keys(projectDetailsMap).find(k => name.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(name.toLowerCase()));
+    let matchedData = null;
+    const matchedKey = Object.keys(projectDetailsMap).find(k => 
+      name.toLowerCase().includes(k.toLowerCase()) || k.toLowerCase().includes(name.toLowerCase())
+    );
     if (matchedKey && projectDetailsMap[matchedKey]) {
-      const match = projectDetailsMap[matchedKey];
-      descText = match.desc;
-      if (match.bullets && match.bullets.length > 0) {
-        bulletsHTML = `
-          <div class="modal-info-panel" style="margin-top: 16px;">
-            <div class="modal-info-title">⚡ Key Engineering Highlights</div>
-            <ul style="margin: 0; padding-left: 20px; color: var(--dark-text-muted); font-size: 0.9rem; line-height: 1.6;">
-              ${match.bullets.map(b => `<li style="margin-bottom: 6px;">${b}</li>`).join('')}
-            </ul>
-          </div>
-        `;
-      }
-    } else if (!descText) {
-      const gridCard = document.querySelector(`.project-card[data-name="${name}"]`);
-      if (gridCard) {
-        descText = gridCard.querySelector('p')?.textContent || '';
-      }
+      matchedData = projectDetailsMap[matchedKey];
     }
 
-    // Resolve tags
-    let tagsHTML = '';
-    const tagElements = card.querySelectorAll('.tag, .slide-info span');
-    if (tagElements.length > 0) {
-      tagElements.forEach(t => {
-        const tags = t.textContent.split('·').map(str => str.trim());
-        tags.forEach(tag => {
-          if (tag && !tag.includes('In Development') && !tag.includes('In Progress') && !tag.includes('NDA')) {
-            tagsHTML += `<span class="modal-tag">${tag}</span>`;
-          }
-        });
-      });
-    }
+    const categoryText = matchedData?.category || card.dataset.category || 'Engineering Project';
+    const descText = matchedData?.problem || card.querySelector('p')?.textContent || '';
+    const liveUrl = matchedData?.url || cardUrl;
 
     // Resolve Logo
     let logoHTML = '';
@@ -284,38 +497,67 @@ function showToast(message, type = 'success', timeout = 3200) {
       logoHTML = `<div class="modal-logo-initials">${name.substring(0, 3)}</div>`;
     }
 
+    // Resolve Status Badge
     let statusBadge = '';
-    let explanationHTML = '';
+    if (liveUrl && !isPrivate && !isOnProgress) {
+      statusBadge = '<span class="modal-status-badge private" style="background: rgba(230, 62, 72, 0.15); color: #ff8b92; border-color: rgba(230, 62, 72, 0.3);">🟢 Live Production</span>';
+    } else if (isPrivate) {
+      statusBadge = '<span class="modal-status-badge private">🔒 Enterprise / NDA Protected</span>';
+    } else if (isOnProgress) {
+      statusBadge = '<span class="modal-status-badge in-progress">🚧 In Development / Active Build</span>';
+    } else {
+      statusBadge = '<span class="modal-status-badge private">✦ Showcase Project</span>';
+    }
 
-    if (isPrivate) {
-      statusBadge = '<span class="modal-status-badge private">Enterprise / NDA Protected</span>';
-      explanationHTML = `
-        <div class="modal-info-panel">
-          <div class="modal-info-title">🔒 Enterprise Project</div>
-          <div class="modal-info-text">
-            This project is part of proprietary client/enterprise solutions. Source code, production endpoints, and customer data are secured under non-disclosure. Reach out to discuss architectural patterns, state strategies, and performance gains.
+    // Bullets HTML
+    let bulletsHTML = '';
+    if (matchedData?.bullets && matchedData.bullets.length > 0) {
+      bulletsHTML = `
+        <div class="modal-info-panel" style="margin-top: 16px;">
+          <div class="modal-info-title">⚡ Key Engineering Contributions</div>
+          <ul style="margin: 0; padding-left: 20px; color: var(--dark-text-muted); font-size: 0.9rem; line-height: 1.65;">
+            ${matchedData.bullets.map(b => `<li style="margin-bottom: 7px;">${b}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    // Metric HTML (e.g., SRNPack verified DOMContentLoaded)
+    let metricHTML = '';
+    if (matchedData?.metric) {
+      metricHTML = `
+        <div class="modal-info-panel" style="border-color: rgba(44, 209, 120, 0.3); background: rgba(44, 209, 120, 0.05); margin-top: 16px;">
+          <div class="modal-info-title" style="color: #2cd178;">📈 Verified Performance Metric</div>
+          <div class="modal-info-text" style="color: var(--dark-text-main); font-size: 0.92rem; font-weight: 600;">
+            ${matchedData.metric}
           </div>
         </div>
       `;
-    } else if (isOnProgress) {
-      statusBadge = '<span class="modal-status-badge in-progress">In Development</span>';
-      explanationHTML = `
-        <div class="modal-info-panel">
-          <div class="modal-info-title">🚧 Active Build</div>
-          <div class="modal-info-text">
-            This platform is currently undergoing visual layout polishing and final system configurations. A public URL will be published as soon as the initial launch phase concludes!
-          </div>
-        </div>
+    }
+
+    // Resolve Tags
+    let tagsHTML = '';
+    if (matchedData?.stack && matchedData.stack.length > 0) {
+      tagsHTML = matchedData.stack.map(tag => `<span class="modal-tag">${tag}</span>`).join('');
+    } else {
+      const tagElements = card.querySelectorAll('.tag');
+      tagElements.forEach(t => {
+        tagsHTML += `<span class="modal-tag">${t.textContent.trim()}</span>`;
+      });
+    }
+
+    // Footer Buttons
+    let footerBtnsHTML = '';
+    if (liveUrl) {
+      footerBtnsHTML = `
+        <a href="${liveUrl}" target="_blank" rel="noopener" class="btn btn-primary modal-live-action-btn">Visit Live Website ↗</a>
+        <button class="btn btn-outline modal-contact-btn">Discuss Architecture</button>
+        <button class="btn btn-outline modal-cancel-btn">Back to Portfolio</button>
       `;
     } else {
-      statusBadge = '<span class="modal-status-badge private">Showcase Project</span>';
-      explanationHTML = `
-        <div class="modal-info-panel">
-          <div class="modal-info-title">📂 Technical Walkthrough</div>
-          <div class="modal-info-text">
-            Interested in a detailed walkthrough of this project's architecture, UI state models, or REST integration patterns? Let's connect!
-          </div>
-        </div>
+      footerBtnsHTML = `
+        <button class="btn btn-primary modal-contact-btn">Discuss Architecture & Details</button>
+        <button class="btn btn-outline modal-cancel-btn">Back to Portfolio</button>
       `;
     }
 
@@ -325,19 +567,27 @@ function showToast(message, type = 'success', timeout = 3200) {
           ${logoHTML}
         </div>
         <div class="modal-header-text">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--coral); font-weight: 700; margin-bottom: 4px;">
+            ${categoryText}
+          </div>
           <h3>${name.toUpperCase()}</h3>
           ${statusBadge}
         </div>
       </div>
-      <div class="modal-desc">${descText}</div>
+      <div class="modal-desc">
+        <strong style="color: var(--dark-text-main); display: block; margin-bottom: 6px;">Business Problem & Scope:</strong>
+        ${descText}
+      </div>
+      ${metricHTML}
       ${bulletsHTML}
-      ${explanationHTML}
+      <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dark-text-muted); font-weight: 700; margin-bottom: 10px;">
+        Technology Stack:
+      </div>
       <div class="modal-tags">
         ${tagsHTML}
       </div>
       <div class="modal-footer-btns">
-        <button class="btn btn-primary modal-contact-btn">Send a Message</button>
-        <button class="btn btn-outline modal-cancel-btn">Back to Portfolio</button>
+        ${footerBtnsHTML}
       </div>
     `;
 
